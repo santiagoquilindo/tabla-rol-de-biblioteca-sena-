@@ -1,21 +1,20 @@
-const db = require("../models");
-const Rol = db.Rol;
+const Rol = require('../models/rol');
 
 exports.getAllRoles = async (req, res) => {
   try {
     const roles = await Rol.findAll();
     res.json(roles);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
 exports.createRol = async (req, res) => {
   try {
     const { nombre } = req.body;
-    const nuevoRol = await Rol.create({ nombre });
-    res.status(201).json(nuevoRol);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const rol = await Rol.create({ nombre });
+    res.status(201).json(rol);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
