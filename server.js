@@ -1,15 +1,20 @@
 const express = require('express');
-const app = express();
 const sequelize = require('./config/database');
 const rolRoutes = require('./routes/rolRoutes');
+require('dotenv').config();
 
+const app = express();
 app.use(express.json());
-app.use('/roles', rolRoutes);
+app.use('/roles', require('./routes/rolRoutes'));
 
-sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+
+sequelize.sync()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error al conectar con la base de datos:', error);
   });
-}).catch(err => {
-  console.error('Error al conectar con la base de datos:', err);
-});

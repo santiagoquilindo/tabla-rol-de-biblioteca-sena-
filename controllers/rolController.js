@@ -1,20 +1,25 @@
-const Rol = require('../models/rol');
+const { obtenerRoles, crearRol } = require('./services/rolService');
 
-exports.getAllRoles = async (req, res) => {
+const getAllRoles = async (req, res) => {
   try {
-    const roles = await Rol.findAll();
+    const roles = await obtenerRoles();
     res.json(roles);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-exports.createRol = async (req, res) => {
+const createRol = async (req, res) => {
   try {
     const { nombre } = req.body;
-    const rol = await Rol.create({ nombre });
-    res.status(201).json(rol);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const nuevoRol = await crearRol(nombre);
+    res.status(201).json(nuevoRol);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
+};
+
+module.exports = {
+  getAllRoles,
+  createRol,
 };
